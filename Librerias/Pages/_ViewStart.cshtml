@@ -1,0 +1,15 @@
+﻿@{
+    string CurrentPath = Convert.ToString(Context.Request.Path);
+    switch (CurrentPath.ToLower()) {
+        case "/login":
+            Layout = "_LoginLayout";
+            break; 
+        case "/crearusuario":
+            Layout = "_LayoutSimple";
+            break;
+        default:
+            //Admin layout
+            Layout = "_Layout";
+            break;
+    }
+}

@@ -1,0 +1,184 @@
+﻿@page
+@model Librerias.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link href="@(Url.Content("~/css/login.css"))" rel="stylesheet" />
+
+
+@if (@Model.ContraseñaEnviada != "")
+{
+    @section Scripts {
+        <script>
+            $('#divLogin').hide();
+
+
+            $('#divOlvidoSuClave').hide();
+            $('#divContraseñaOK').show();
+        </script>
+    }
+
+}
+
+<script>
+    function olvidoSuClave(olvido) {
+        if (olvido === 1) {
+            $('#divLogin').hide();
+            $('#divContraseñaOK').hide();
+            $('#divOlvidoSuClave').show();
+
+
+        }
+
+    }
+</script>
+<style>
+    .input-group-text {
+        border-right: none !important; 
+        }
+
+    .form-control {
+        border-left: none !important; 
+    }
+
+    
+</style>
+ 
+<div class="container-login100">
+    <div class="wrap-login100">
+        <form method="POST" asp-page-handler="" class="login100-form" id="divLogin">
+
+            <div class="min-vh-100 d-flex justify-content-center align-items-center" >
+                <div class="card p-4 shadow-lg border-0 rounded-4" style="width: 100%; max-width: 400px; background-color: rgba(255, 255, 255, 0.95);">
+                    <div class="text-center mb-4">
+                        <img src="~/images/logo.png" alt="Logo" class="img-fluid" style="max-height: 100px;">
+                    </div>
+
+                    <form method="POST" asp-page-handler="">
+                        <input type="hidden" name="ReturnUrl" value="@Request.Query["ReturnUrl"].ToString()" />
+
+                        <div class="form-group mb-3">
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white border-end-0 rounded-start-pill">
+                                        <i class="fas fa-user " style="color:orange"></i>
+                                    </span>
+                                </div>
+                                <input type="text" asp-for="Email" class="form-control border-start-0 rounded-end-pill" placeholder="Email" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white border-end-0 rounded-start-pill">
+                                        <i class="fas fa-eye"  style=" color:orange"></i>
+                                    </span>
+                                </div>
+                                <input type="password" asp-for="Password" class="form-control border-start-0 rounded-end-pill" placeholder="Clave" required />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn  btn-block rounded-pill py-2" style="background-color:orange">
+                            INGRESAR
+                        </button>
+
+                       <div class="text-center mt-3">
+                            <a asp-page="./CrearUsuario"   class="text-muted small">Crear mi usuario</a>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+
+
+        </form>
+
+        <a href="https://wa.me/+5493834212333?text=Hola estoy interesado" class="float-wa" target="_blank">
+            <i class="fa fa-whatsapp" style="margin-top:16px;"></i>
+        </a>
+        <form method="POST" asp-page-handler="ResetPassword" class="login100-form" id="divOlvidoSuClave" style="display:none">
+            <div class="text-box-cont">
+
+                <div class="mt-4 my-3 p-4">
+                    <div class="row my-3">
+                        <div class="col-md-12 text-center">
+                            <img src="~/images/logo.png" style="width: 100%;" />
+                            <h1 class="text-center pb-3 text-muted"></h1>
+                        </div>
+                        <h1 class="h3 m-bottom">¿Te olvidaste tu contraseña?</h1>
+                        <p>¡No te preocupes! Escribí el email de tu usuario y recibí instrucciones para recuperarla. </p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-pill" id="basic-addon1">
+                                    <i class="fas fa-eye" style=" color:orange"></i>
+                                </span>
+                                
+                            </div>
+                            <input asp-for="@Model.EmailOlvidado" type="text" class="form-control" placeholder="Email" />
+
+                        </div>
+                    </div>
+                    <div class="input-group center float-right">
+                        <button type="submit" class="btn btn-dark  btn-round" style="color:orange!important; width:100%;border-radius:10px; margin-bottom:15px">RECUPERAR CONTRASEÑA</button>
+                    </div>
+
+                    <div id="linkOlvido" class="text-center p-t-12" style="margin-top:40px">
+                        <a href="/login" style="color: #999999;text-decoration: none;">
+                            Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+        <form id="divContraseñaOK" style="display:none"  class="login100-form">
+            <div class="text-box-cont">
+
+                <div class="mt-4 my-3 p-4">
+                    <div class="row my-3">
+                        <div class="col-md-12 text-center">
+                            <img src="~/images/logo.png" style="width: 100%;" />
+                            <h1 class="text-center pb-3 text-muted"></h1>
+                        </div>
+                        <p>¡Te va a llegar un correo con tu contraseña, no te olvides de cambiarla una vez ingresado </p>
+                    </div>                  
+
+                    <div id="linkOlvido" class="text-center p-t-12" style="margin-top:40px">                        
+                            <button asp-page="login"  class="btn btn-dark  btn-round" style="color:orange!important; width:80%;border-radius:10px; margin-bottom:15px">Volver</button>
+
+                         
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+
+
+        <div class="login100-more" style="background-image: url('https://multidealerfiles.s3.sa-east-1.amazonaws.com/otros/5.jpg');"></div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+
+
+

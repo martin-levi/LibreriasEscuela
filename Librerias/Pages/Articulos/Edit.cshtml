@@ -1,0 +1,225 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Articulos.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h6>Editar</h6>
+<style>
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .form-container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .btn-custom {
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<h3>Articulo</h3>
+<form method="post" name="frm">
+    
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Campos ocultos -->
+    <input type="hidden" asp-for="Articulos.ID" />
+    <input type="hidden" asp-for="Articulos.Imagen" />
+    <input id="archivosS3" name="archivosS3" type="hidden" />
+    <input id="archivosS3Eliminados" name="archivosS3Eliminados" type="hidden" />
+
+    <div class="container form-container">
+        <div class="row mb-3">
+            <!-- Codigo -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Articulos.Codigo)</label>
+                    <input asp-for="Articulos.Codigo" class="form-control" placeholder="Codigo"  readonly/>
+                    <span asp-validation-for="Articulos.Codigo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Descripcion -->
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Articulos.Descripcion)</label>
+                    <input asp-for="Articulos.Descripcion" class="form-control" placeholder="Descripcion" readonly />
+                    <span asp-validation-for="Articulos.Descripcion" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <!-- Codigo -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Articulos.Categoria)</label>
+                    <input asp-for="Articulos.Categoria" class="form-control" placeholder="Categoria" readonly />
+                    <span asp-validation-for="Articulos.Categoria" class="text-danger"></span>
+                </div>
+            </div>
+        
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Imagen -->
+                <div class="form-group">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Articulos.Imagen)</label>
+                    <div class="agregar-img">
+                        @if (!string.IsNullOrEmpty(Model.Articulos.Imagen))
+                        {
+                            <img id="imgLogotipoPreview" class="img-responsive" onerror="this.onerror=null; this.src='https://yhnjym8bmg.execute-api.sa-east-1.amazonaws.com/Prod/image/producto-sin-imagen.jpg';" src="@Model.Articulos.Imagen" alt="" style="width:100%">
+                        }
+                        else
+                        {
+                            <img id="imgLogotipoPreview" class="img-responsive cursor-pointer" src="https://yhnjym8bmg.execute-api.sa-east-1.amazonaws.com/Prod/image/producto-sin-imagen.jpg" alt="" style="width:100%">
+                        }
+                        <div class="overlay">
+                            <input type="file" id="Logo" onchange="onChangeLogo(this,Articulos_Imagen,imgLogotipoPreview);" accept="image/*" style="display:none">
+                        </div>
+                    </div>
+ 
+
+                    <a id="limpiarAdjunto1" href="#limpiarAdjunto" onclick="limpiarAdjunto(Articulos_Imagen,imgLogotipoPreview);">
+                        <span class="text-danger" style="position: absolute; right:18px"><i class="far fa-trash-alt"></i></span>
+                    </a>
+                </div>
+            </div>
+             
+        </div>
+     
+         <!-- Botones -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg-white py-3">
+                    <a class="btn btn-danger float-left" asp-page="Index">Volver</a>
+                    <input type="button" value="Guardar" onclick=" SubmitForm();" class="btn btn-primary float-right" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+   
+</form>
+
+<div id="idPopUpLoading" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex justify-content-center">
+                    <h6 class="modal-title text-success">Aguarde por favor</h6>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border text-success" role="status">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+   
+    <script>
+         $(document).ready(function () {
+            $('#imgLogotipoPreview').click(function () { $('#Logo').trigger('click'); });
+        });
+        var eliminados = [];
+        var modificados = [];
+        var archivos = [];
+        function onChangeLogo(arch, input, imagen) {
+            if (arch.files && arch.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+
+                    $(imagen).attr('src', e.target.result);
+                    input.value=arch.files[0].name;
+                }
+                reader.readAsDataURL(arch.files[0]);
+                modificados.push(arch.id);
+            }
+        }
+
+        function limpiarAdjunto(input, imagen) {
+            eliminados.push(input.id.replace("Stock_",""));
+            $(input).val('');
+            $(imagen).attr('src', "../image/producto-sin-imagen.jpg");
+        }
+
+         async function SubmitForm() {
+            $("#idPopUpLoading").modal("show");
+            await Subir();
+
+            frm.submit();
+        }
+
+        async function Subir() {
+            var inputs = [];
+
+            if (modificados.includes("Logo")) {
+                inputs.push({
+                    input: $("#Logo").get(0),
+                    Posicion: "Logo"
+                });
+            }
+             
+
+            var lstRespuestas = [];
+            var ruta = "otros/imagenes/";
+            for (var i = 0; i < inputs.length; i++) {
+                var fileName = inputs[i].input.files[0].name;
+                var type = inputs[i].input.files[0].type;
+                lstRespuestas.push(await $.ajax({
+                    type: "GET",
+                    url: "@(Url.Content("~/api/Tablas/getPreSignerURL"))" +  "?filename=" + fileName + "&carpeta=" + ruta + "&ContentType=" + type
+                }));
+            }
+
+            let URLs = await Promise.all(lstRespuestas);
+
+            lstRespuestas = [];
+            for (var i = 0; i < URLs.length; i++) {
+
+                lstRespuestas.push(await $.ajax({
+                    type: "PUT",
+                    url: URLs[i],
+                    data: inputs[i].input.files[0],
+                    contentType: type,
+                    processData: false
+                }));
+            }
+
+            var responses = await Promise.all(lstRespuestas);
+            for (var i = 0; i < responses.length; i++) {
+                archivos.push({
+                    Nombre: inputs[i].input.files[0].name,
+                    Ruta: ruta + inputs[i].input.files[0].name,
+                    Tipo: inputs[i].input.files[0].type,
+                    Posicion: inputs[i].Posicion
+                });
+            }
+            $("#archivosS3").val(JSON.stringify(archivos));
+            $("#archivosS3Eliminados").val(JSON.stringify(eliminados));
+        }
+
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}

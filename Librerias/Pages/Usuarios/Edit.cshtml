@@ -1,0 +1,117 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Usuarios.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h6>Editar</h6>
+<style>
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .form-container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .btn-custom {
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<h3>Usuario</h3>
+<form method="post" name="frm">
+    
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Campos ocultos -->
+    <input type="hidden" asp-for="Usuarios.Id" />
+    <input type="hidden" asp-for="Usuarios.Borrado" />
+    <input type="hidden" asp-for="Usuarios.FechaGrabado" />
+    <input type="hidden" asp-for="Usuarios.FechaBorrado" />
+    <input type="hidden" asp-for="Usuarios.Clave" />
+    <div class="container form-container">
+        <div class="row mb-3">
+            <!-- Nombre -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Usuarios.Nombre)</label>
+                    <input asp-for="Usuarios.Nombre" class="form-control" placeholder="Nombre" />
+                    <span asp-validation-for="Usuarios.Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Apellido -->
+                <div class="form-group">
+                    <label class="form-label" >@Html.DisplayNameFor(model => model.Usuarios.Apellido)</label>
+                    <input asp-for="Usuarios.Apellido" class="form-control" placeholder="Apellido" />
+                    <span asp-validation-for="Usuarios.Apellido" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Usuarios.Email)</label>
+                    <input asp-for="Usuarios.Email" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="Usuarios.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Dni -->
+                <div class="form-group">
+                    <label class="form-label">
+                        @Html.DisplayNameFor(model => model.Usuarios.Dni)</label>
+                    <input asp-for="Usuarios.Dni" class="form-control" placeholder="Dni" />
+                    <span asp-validation-for="Usuarios.Dni" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input asp-for="Usuarios.FechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento" required />
+                    <span asp-validation-for="Usuarios.FechaNacimiento" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Admin -->
+                <div class="form-group form-check">
+                    <input asp-for="Usuarios.Admin" class="form-check-input" />
+                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Usuarios.Admin)</label>
+                </div> 
+            </div>
+        </div>
+         <!-- Botones -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg-white py-3">
+                    <a class="btn btn-danger float-left" asp-page="Index">Volver</a>
+                    <input type="submit" value="Guardar" class="btn btn-primary float-right" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+   
+</form>
+
+
+
+
+@section Scripts {
+   
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}

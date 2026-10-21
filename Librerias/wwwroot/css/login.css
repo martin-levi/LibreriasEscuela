@@ -1,0 +1,53 @@
+﻿body{
+    overflow:hidden;
+}
+
+.container-login100 {
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #f2f2f2;
+}
+
+.wrap-login100 {
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    flex-direction: row-reverse;
+}
+
+.login100-form {
+    width: 500px;
+    min-height: 100vh;
+    display: block;
+    background-color: #fff;
+    padding: 0 55px 0 55px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    box-shadow: 6px 0px 18px 15px #00000014;
+}
+
+.login100-more {
+    width: calc(100% - 500px );
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+    position: relative;
+    z-index: 1;
+}
+  

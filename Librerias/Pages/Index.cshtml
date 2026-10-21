@@ -1,0 +1,25 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+ 
+ 
+ 
+ 
+
+@section Scripts {
+    <script>
+         
+        $(document).ready(function () {
+
+              window.location.href = "https://yhnjym8bmg.execute-api.sa-east-1.amazonaws.com/Prod/Listas";
+            
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,270 @@
+﻿@page
+@model Librerias.Pages.Listas.ResumenModel
+@{
+    ViewData["Title"] = "Resumen del Pedido";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<h3>Resumen del Pedido</h3>
+
+<div class="card p-3 mb-4">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="control-label">Maestro/a</label>
+            <select id="MaestraLista" class="form-control" asp-items="Model.MaestrasSelecList">
+                <option value="-1">Seleccionar</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="NombreLista">Nombre de la Lista</label>
+            <input type="text" id="NombreLista" class="form-control" placeholder="Ingrese nombre de la lista" required />
+        </div>
+        <div class="col-md-2 mtc">
+            <label for="CantidadAlumnos">Cantidad de Alumnos</label>
+            <input type="number" id="CantidadAlumnos" class="form-control" min="1" placeholder="Ingrese la cantidad de alumnos" required />
+        </div>
+    </div>
+</div>
+<div class="card p-3 mb-4">
+    <div class="mb-3">
+        <label for="escuela" class="form-label">Nombre de la escuela</label>
+        <input type="text" class="form-control" id="escuela">
+    </div>
+    <div class="mb-3">
+        <label for="salita" class="form-label">Nombre de la salita</label>
+        <input type="text" class="form-control" id="salita">
+    </div>
+    <div class="mb-3">
+        <label for="observaciones" class="form-label">Observaciones</label>
+        <textarea class="form-control" id="observaciones" rows="3"></textarea>
+    </div>
+</div>
+<div class="row">
+<div class="col">
+    <button id="btnVolver" onclick="window.history.back();" class="btn btn-primary float-right mb-2">
+        Agregar mas articulos
+    </button>
+</div>
+</div>
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="resTabla"></tbody>
+</table>
+<div class="row">
+    <div class="col">
+        <p><strong>Total Pedido:</strong> <span id="totalPedido">$0.00</span></p>
+        <p><strong>Total por Alumno:</strong> <span id="totalAlumno">$0.00</span></p>
+
+
+    </div>
+   
+
+
+</div>
+
+<div class="row">
+    <div class="col">
+        <button id="btnConfirmar" class="btn btn-success float-right mt-3">
+            Confirmar Pedido
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const productos = JSON.parse(localStorage.getItem("pedidoProductos") || "[]");
+            const lista = localStorage.getItem("pedidoNombreLista") || "";
+            const alumnos = localStorage.getItem("cantidadAlumnos") || 1;
+            //const maestra = localStorage.getItem("nombreMaestra") || "";
+            
+            //document.getElementById("resLista").textContent = lista;
+            $("#CantidadAlumnos").val(alumnos);
+            $("#NombreLista").val(lista);
+            //document.getElementById("resMaestra").textContent = maestra;
+            const isAdmin = @User.Claims.FirstOrDefault(c => c.Type == "Admin")?.Value.ToLower()  ;
+            const userId = "@User.Claims.FirstOrDefault(c => c.Type == "IdUsuario")?.Value";
+            
+            if (!isAdmin) { 
+               $('#MaestraLista').val(userId).prop('disabled', true);
+            }
+
+
+            const tbody = document.getElementById("resTabla");
+            let total = 0;
+
+            productos.forEach((p, idx) => {
+                let tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${p.nombre}</td>
+                    <td style="padding-top:0px!important"><input id="cantidad-${p.codigo}"
+                               data-codigo="${p.codigo}"
+                               type="number"
+                               class="form-control text-center my-2 "
+                               style="max-width:70px"
+                               value="${p.cantidad}" min="1" onchange="SumarCantidad(${idx},this.value);"></td>
+                    <td>$${p.precio.toFixed(2)}</td>
+                    <td>$${p.subtotal.toFixed(2)}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="eliminar(${idx})">Eliminar</button></td>
+                `;
+
+                tbody.appendChild(tr);
+                total += p.subtotal;
+            });
+
+            document.getElementById("totalPedido").textContent = "$" + total.toFixed(2);
+            document.getElementById("totalAlumno").textContent = "$" + (total / alumnos).toFixed(2);
+
+            window.eliminar = function(index) {
+                productos.splice(index, 1);
+                localStorage.setItem("pedidoProductos", JSON.stringify(productos));                 
+                localStorage.setItem("cantidadAlumnos", $('#CantidadAlumnos').val());
+                localStorage.setItem("pedidoNombreLista", $('#NombreLista').val());
+                
+                location.reload();
+            };
+
+
+            window.SumarCantidad = function(index,cantidad){
+                productos[index].cantidad = cantidad; 
+                productos[index].subtotal = productos[index].cantidad * productos[index].precio;
+
+                localStorage.setItem("pedidoProductos", JSON.stringify(productos));
+                localStorage.setItem("cantidadAlumnos", $('#CantidadAlumnos').val());
+                localStorage.setItem("pedidoNombreLista", $('#NombreLista').val());
+
+                location.reload();
+            }
+
+
+            document.getElementById("btnConfirmar").addEventListener("click", async () => {
+                ok=true;
+                error="";
+                if ($("#NombreLista").val()==""){
+                    error=error+'Debe ingresar un nombre de lista\n';
+                     
+                    ok=false;
+                }
+                if ($("#CantidadAlumnos").val()==""){
+                    error=error+'Debe ingresar cantidad de alumnos\n';
+                    ok=false;
+                }
+                if ($("#MaestraLista").val()=="-1"){
+                    error=error+'Debe ingresar una maestra\n';
+                    ok=false;
+                }
+                if (productos.length==0){
+                    error=error+'Debe ingresar articulos\n';
+                    ok=false;
+                }
+                if ($("#escuela").val()==""){
+                    error=error+'Debe ingresar una escuela\n';
+                    ok=false;
+                }
+                if ($("#salita").val()==""){
+                    error=error+'Debe ingresar una salita\n';
+                    ok=false;
+                }
+                if (ok==true){
+                    const escuela = document.getElementById("escuela").value;
+                    const salita = document.getElementById("salita").value;
+                    const observaciones = document.getElementById("observaciones").value;
+                    const detalles = productos.map(p => ({
+                        codigoArticulo: p.codigo,
+                        cantidad: p.cantidad,
+                        precio: p.precio
+                    }));
+
+                    const body = {
+                        pedidoId: 0,
+                        nombreLista: $("#NombreLista").val(),
+                        IdUsuario: $("#MaestraLista").val(),
+                        cantidadAlumnos: $("#CantidadAlumnos").val(),
+                        alumnos: Array.from({length: alumnos}, (_, i) => "Alumno" + (i+1)),
+                        detalles,
+                        nombreEscuela: escuela,
+                        nombreSalita: salita,
+                        observaciones: observaciones
+                    };
+
+                    try {
+                        const res = await fetch("../api/pedidos/guardarAlumnos", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body)
+                        });
+
+                        if (!res.ok) throw new Error();
+
+                        localStorage.removeItem("pedidoProductos");
+                        localStorage.removeItem("pedidoNombreLista");
+                        localStorage.removeItem("pedidoAlumnos");
+                        localStorage.removeItem("pedidoMaestra");
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Pedido guardado",
+                            confirmButtonText: "Ir al listado"
+                        }).then(() => window.location.href = "../Listas/Index");
+
+                    }
+                    catch (e) {
+                        Swal.fire({ icon: "error", text: "Error al guardar." });
+                    }
+                }
+                else{
+                    Swal.fire({ icon: "error", html: error.replace(/\n/g, "<br>") });
+                }
+            });
+
+        });
+
+
+         function recalcularTotales() {
+            let total = 0;
+
+            const productos = JSON.parse(localStorage.getItem("pedidoProductos") || "[]");
+
+            productos.forEach((p, idx) => { 
+                 total += p.cantidad * p.precio; 
+            });
+
+            
+            const alumnos = document.getElementById("CantidadAlumnos").value;
+           
+            const cantidadAlumnos = isNaN(alumnos) || alumnos <= 0 ? 1 : alumnos;
+            
+            document.getElementById("totalPedido").textContent = `$ ${total.toFixed(2)}`;
+            document.getElementById("totalAlumno").textContent = "$" + (total / cantidadAlumnos).toFixed(2);
+            
+        }
+
+
+        document.getElementById("CantidadAlumnos").addEventListener("input", () => {
+            recalcularTotales();
+        });
+
+
+    </script>
+}

@@ -1,0 +1,141 @@
+﻿@page
+@model CrearUsuario
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .form-container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .btn-custom {
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<h3>Crear mi usuario para usar el sistema</h3>
+<br />
+<form method="post" name="frm">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+     
+    <div class="container form-container">
+        <div class="row mb-3">
+            <!-- Nombre -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Usuarios.Nombre)</label>
+                    <input asp-for="Usuarios.Nombre" class="form-control" placeholder="Nombre" />
+                    <span asp-validation-for="Usuarios.Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Apellido -->
+                <div class="form-group">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Usuarios.Apellido)</label>
+                    <input asp-for="Usuarios.Apellido" class="form-control" placeholder="Apellido" />
+                    <span asp-validation-for="Usuarios.Apellido" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Usuarios.Email)</label>
+                    <input asp-for="Usuarios.Email" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="Usuarios.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Clave</label>
+                <input asp-for="Usuarios.Clave" class="form-control" placeholder="Clave" type="password" required />
+            </div>
+
+           
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input asp-for="Usuarios.FechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento" required />
+                    <span asp-validation-for="Usuarios.FechaNacimiento" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Dni -->
+                <div class="form-group">
+                    <label class="form-label">
+                        @Html.DisplayNameFor(model => model.Usuarios.Dni)
+                    </label>
+                    <input asp-for="Usuarios.Dni" class="form-control" placeholder="Dni" />
+                    <span asp-validation-for="Usuarios.Dni" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-6 mb-2">
+                <a class="btn btn-danger btn-custom" asp-page="Index">Volver</a>
+            </div>
+            <div class="col-md-6 mb-2">
+                <input type="button" value="Guardar" class="btn btn-success btn-custom" onclick="validarForm();" />
+            </div>
+        </div>
+
+    </div>
+
+
+</form>
+
+ 
+ 
+ 
+ 
+
+@section Scripts {
+    <script type="text/javascript">
+
+
+        function validarForm() {
+            if ($('#Usuarios_Email').val()!=""){
+                 if ($('#Usuarios_Clave').val()!=""){
+                    usuario = $('#Usuarios_Email').val()
+                    var existe = false;
+                    $.ajax({
+                        "url": `@(Url.Content("~/api/usuarios/validarUsuarioExistente"))/${usuario}`,
+                        "method": "GET",
+                        "async": false,
+                    }).done(function (ex) {
+                        existe = ex;
+                    });
+                    if (existe) {
+                        alert('El usuario ya existe en el sistema');
+                    }
+                    else {
+                            frm.submit();
+                    }
+                 }
+                else{
+                    alert('Debe ingresar una clave');
+                } 
+            }
+            else{
+                alert('Debe ingresar un email');
+            }
+
+        }
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

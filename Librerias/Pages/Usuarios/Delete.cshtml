@@ -1,0 +1,27 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Usuarios.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h6>Eliminar</h6>
+
+<div>
+    <h3>Usuario</h3>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Usuarios.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Usuarios.Email)
+        </dd>
+    </dl>
+ 
+    <form method="post">
+        <input type="hidden" asp-for="Usuarios.Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger float-right  " />
+        <a asp-page="Index" class="btn btn-danger float-left">Volver</a>
+    </form>
+</div>

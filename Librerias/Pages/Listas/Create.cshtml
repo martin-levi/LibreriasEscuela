@@ -1,0 +1,454 @@
+﻿@page
+@model Librerias.Pages.Listas.CreateModel
+@{
+    ViewData["Title"] = "Crear Pedido";
+}
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<h3>Crear nuevo pedido</h3>
+
+<form id="formPedido">
+    
+    <!-- Selección visual de categorías -->
+    <div class="mb-5 mt-5">
+        <h5>Seleccioná una categoría:</h5>
+        <div id="categoriasContainer" class="row gx-3 gy-3 mt-3"></div>
+    </div>
+
+    <div class="contenedor-derecha">
+        <button type="button" id="btnSiguiente" class="btn btn-warning mt-4">Siguiente</button>
+    </div>
+
+
+   @*  <!-- Tabla de productos -->
+    <div id="seccionProductos" class="mb-3 mt-5" style="display:none;">
+        <h4>Productos agregados</h4>
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th class="text-right">Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbodyProductos"></tbody>
+        </table>
+        <p><strong>Total Pedido:</strong> <span id="totalPedido">$0.00</span></p>
+        <p><strong>Total por Alumno:</strong> <span id="totalPorAlumno">$0.00</span></p>
+        <button type="button" id="btnGuardarPedido" class="btn btn-primary float-end">Guardar Pedido</button>
+    </div> *@
+
+    <!-- Modal de productos -->
+    <div class="modal fade" id="modalProductos" tabindex="-1" aria-labelledby="modalProductosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title" id="modalProductosLabel">Productos de la Categoría</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="articuloInput" class="form-control" placeholder="Buscar producto..." />
+                   <div id="autocompleteList" class="list-group" style="display:none; position:absolute;"></div>
+
+                    
+                    <div id="contenedorCardsProductos"
+                         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-0 px-2">
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+         $('#modalProductos').on('shown.bs.modal', function () {
+            $(this).find('.modal-body').scrollTop(0);
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+
+            
+            const precios = {
+                @foreach (var kvp in Model.PreciosPorArticulo)
+                {
+                    <text>"@kvp.Key": @kvp.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture),</text>
+                }
+            };
+
+             const articulos = [
+            @foreach (var art in Model.ArticulosSelectList)
+            {
+                    <text>
+                        {
+                            codigo: "@art.Codigo",
+                            nombre: "@art.Descripcion",
+                            categoria: "@art.Categoria",
+                            imagen: "@art.Imagen"
+                        },
+                    </text>
+            }
+            ];
+          
+
+
+        const categoriasContainer = document.getElementById("categoriasContainer");
+
+        
+        const categoriasUnicas = [...new Set(articulos.map(a => a.categoria))].sort((a, b) => a.localeCompare(b));
+
+        const imagenesPorCategoria = {
+            "ADHESIVOS": "../image/adhesivos.png",
+            "CUADERNOS Y BLOCKS": "../image/cuadernos.png",
+            "DIDACTICOS": "../image/didacticos.jpg",
+            "ESCRITURA": "../image/escritura.png",
+            "MASAS Y PLASTILINAS": "../image/masas.png",
+            "PAPELERIA Y MANUALIDADES": "../image/manualidades.png",
+            "PINTURAS": "../image/pinturas.png",
+            "VARIOS": "../image/varios.png"
+        };
+
+
+        categoriasUnicas.forEach(cat => {
+            const col = document.createElement("div");
+            col.className = "col-md-3 mb-4 d-flex justify-content-center";
+
+            const card = document.createElement("div");
+            card.className = "card-categoria d-flex flex-column align-items-center text-center mt-2";
+            card.style.height = "280px";
+            card.style.width = "220px";
+            card.style.fontSize = "16px";
+            card.style.fontWeight = "600";
+            card.style.cursor = "pointer";
+            
+            card.style.borderRadius = "16px";
+            card.style.boxShadow = "0 8px 20px rgba(255, 152, 0, 0.4)";
+            card.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
+            card.style.backgroundColor = "#ffffff";
+            card.style.padding = "20px";
+
+            const imagenSrc = imagenesPorCategoria[cat.toUpperCase()] || "/image/varios.png";
+
+            card.innerHTML = `
+                <img src="${imagenSrc}" alt="${cat}"
+                     style="height: 140px; width: auto; object-fit: contain; margin-bottom: 12px;">
+                <div style="line-height: 1.2;">${cat}</div>
+            `;
+
+            card.addEventListener("click", () => filtrarPorCategoria(cat));
+
+            col.appendChild(card);
+            categoriasContainer.appendChild(col);
+        });
+
+
+
+
+            /*  Mostrar productos por categoría */
+                   function filtrarPorCategoria(categoria) {
+            const lista = articulos.filter(a => a.categoria === categoria);
+            const contenedor = document.getElementById("contenedorCardsProductos");
+
+            
+            inputArticulo.value = "";
+            autocomplete.style.display = "none";
+
+            contenedor.innerHTML = "";
+
+            lista.forEach(prod => insertarCardProducto(contenedor, prod));
+
+            
+            setTimeout(() => {
+                document.querySelectorAll("#contenedorCardsProductos .card-producto").forEach(card => {
+                    const wrapper = card.closest("div[class*='col-']");
+                    if (wrapper) {
+                        wrapper.style.setProperty("display", "", "important");
+                    }
+                });
+            }, 50); 
+
+            new bootstrap.Modal(document.getElementById("modalProductos")).show();
+        }
+
+
+
+
+
+           function insertarCardProducto(contenedor, prod) {
+                const productosGuardados = JSON.parse(localStorage.getItem("pedidoProductos") || "[]");
+             const yaAgregado = productosGuardados.some(p => p.codigo === prod.codigo);
+               if (yaAgregado){
+                            var cantidadAgregada= productosGuardados.reduce(
+                              (acc, p) => p.codigo === prod.codigo ? acc + p.cantidad : acc,
+                              0
+                            );
+                               
+               }
+                const wrapper = document.createElement("div");
+                wrapper.className = "col-12 col-sm-6 col-md-4 col-lg-3 d-flex";
+
+                          const formatter = new Intl.NumberFormat('es-AR');
+
+    
+
+                wrapper.innerHTML = `
+            <div class="card-producto card h-100 d-flex flex-column align-items-center text-center p-3 mt-5">
+                <img src="${prod.imagen ? prod.imagen : '../image/producto-sin-imagen.jpg'}"
+                     onerror="this.src='image/producto-sin-imagen.jpg'"
+                     class="img-producto mb-2">
+
+                <h5 class="mb-2">${prod.nombre}</h5>
+
+                    ${yaAgregado ? `<div class="badge-agregado mt-1">Producto agregado <br>Cantidad: ${cantidadAgregada}</div>` : ""}
+
+                   <p><strong>Precio:</strong> $${formatter.format(precios[prod.codigo])}</p>
+
+                <input id="cantidad-${prod.codigo}"
+                       data-codigo="${prod.codigo}"
+                       type="number"
+                       class="form-control text-center my-2"
+                       style="max-width:70px"
+                       value="1" min="1">
+
+                <button type="button" class="btn btn-primary btn-sm mt-2"
+                        onclick="agregarDesdeModal('${prod.codigo}')">
+                    Agregar
+                </button>
+            </div>
+        `;
+
+
+            contenedor.appendChild(wrapper);
+        }
+
+        
+        const normalizar = t =>
+            t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+
+                function filtrarProductosEnModal(texto) {
+            const busqueda = normalizar(texto);
+
+            document.querySelectorAll("#contenedorCardsProductos .card-producto").forEach(card => {
+                const nombre = normalizar(card.querySelector("h5").textContent);
+                const codigo = card.querySelector("input").dataset.codigo;
+
+                const coincide = nombre.includes(busqueda) || codigo.includes(busqueda);
+
+                const wrapper = card.closest("div[class*='col-']");  
+
+                if (wrapper) {
+                    if (coincide) {
+                        wrapper.style.setProperty("display", "", "important");
+                    } else {
+                        wrapper.style.setProperty("display", "none", "important");
+                    }
+                }
+            });
+        }
+        // AUTOCOMPLETE + BUSCADOR
+        
+        const inputArticulo = document.getElementById("articuloInput");
+         
+
+        const autocomplete = document.getElementById("autocompleteList");
+
+
+        
+        inputArticulo.addEventListener("input", function () {
+            const texto = this.value.trim();
+            const filtrado = normalizar(texto);
+
+            filtrarProductosEnModal(texto);
+
+            autocomplete.innerHTML = "";
+
+            if (!texto) {
+                autocomplete.style.display = "none";
+                return;
+            }
+
+            const sugerencias = articulos.filter(a =>
+                normalizar(a.nombre).includes(filtrado) ||
+                a.codigo.includes(filtrado)
+            );
+
+            autocomplete.style.display = sugerencias.length ? "block" : "none";
+        });
+
+
+        
+        inputArticulo.addEventListener("keydown", function (e) {
+              
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const texto = this.value.trim();
+                    
+
+                if (texto.length > 0) {
+                    filtrarProductosEnModal(texto);
+                }
+            }
+        });
+
+
+        
+        autocomplete.addEventListener("click", e => {
+            if (e.target.classList.contains("list-group-item")) {
+                inputArticulo.value = e.target.textContent;
+                autocomplete.style.display = "none";
+            }
+        });
+
+
+        
+        window.agregarDesdeModal = function (codigo) {
+
+            const input = document.querySelector(`#cantidad-${codigo}`);
+            const cantidad = parseInt(input.value);
+            const producto = articulos.find(a => a.codigo === codigo);
+            const precio = parseFloat(precios[codigo]);
+
+            if (!cantidad || cantidad < 1) {
+                Swal.fire({ icon: "warning", text: "Ingresá una cantidad válida." });
+                return;
+            }
+
+            agregarProductoATabla(`${producto.nombre}`, codigo, cantidad, precio);
+        };
+
+
+        function agregarProductoATabla(nombre, codigo, cantidad, precio) {
+
+            const productos = JSON.parse(localStorage.getItem("pedidoProductos") || "[]");
+
+            productos.push({
+                nombre,
+                codigo,
+                cantidad,
+                precio,
+                subtotal: precio * cantidad
+            });
+
+            localStorage.setItem("pedidoProductos", JSON.stringify(productos));
+
+            document.getElementById("btnSiguiente").style.display = "inline-block";
+
+                   Swal.fire({
+                icon: "success",
+                title: "Producto Agregado"
+            }).then(() => {
+                
+                const card = document.querySelector(`#cantidad-${codigo}`).closest(".card-producto");
+
+                if (card) {
+                    
+                    if (!card.querySelector(".badge-agregado")) {
+                        const badge = document.createElement("div");
+                        badge.className = "badge-agregado mt-1";
+                        badge.textContent = "Producto agregado";
+
+                        
+                        const titulo = card.querySelector("h5");
+                        titulo.insertAdjacentElement("afterend", badge);
+                    }
+                }
+            });
+        }
+
+
+        
+        document.getElementById("btnSiguiente").addEventListener("click", () => {
+            window.location.href = "../Listas/Resumen";
+        });
+
+        
+        const modalElement = document.getElementById("modalProductos");
+
+        modalElement.addEventListener("hidden.bs.modal", () => {
+           
+            inputArticulo.value = "";
+
+            
+            document.querySelectorAll("#contenedorCardsProductos .card-producto").forEach(card => {
+                const wrapper = card.closest("div[class*='col-']");
+                if (wrapper) {
+                    wrapper.style.setProperty("display", "", "important");
+                }
+            });
+
+            
+            autocomplete.style.display = "none";
+        });
+
+            
+        // document.getElementById("tbodyProductos").addEventListener("click", (e) => {
+        //     if (e.target.classList.contains("btnEliminarProducto")) {
+        //         e.target.closest("tr").remove();
+        //         recalcularTotales();
+        //     }
+        // });
+
+
+           
+       
+
+
+            
+        //     document.getElementById("btnGuardarPedido").addEventListener("click", async () => {
+
+        //         const nombreLista = document.getElementById("NombreLista").value;
+        //         const alumnosCant = parseInt(document.getElementById("CantidadAlumnos").value);
+        //         const filas = document.querySelectorAll("#tbodyProductos tr");
+        //         let IdUsuario = $("#MaestraLista").val();
+        //           IdUsuario = (IdUsuario === "" || IdUsuario === null) ? parseInt(userId) : parseInt(IdUsuario);
+
+        //         if (!nombreLista || !alumnosCant || filas.length === 0 || IdUsuario == -1) {
+        //             Swal.fire({ icon: "warning", text: "Completá todos los datos." });
+        //             return;
+        //         }
+
+        //         const alumnos = Array.from({ length: alumnosCant }, (_, i) => `Alumno${i + 1}`);
+
+        //         const detalles = Array.from(filas).map(row => ({
+        //             codigoArticulo: row.children[0].dataset.codigo,
+        //             cantidad: parseInt(row.children[1].textContent),
+        //             precio: parseFloat(row.children[2].textContent.replace("$", ""))
+        //         }));
+
+        //         try {
+        //             const res = await fetch("@(Url.Content("~/api/pedidos/guardarAlumnos"))", {
+        //                 method: "POST",
+        //                 headers: { "Content-Type": "application/json" },
+        //                 body: JSON.stringify({
+        //                     pedidoId: 0,
+        //                     nombreLista,
+        //                     IdUsuario,
+        //                     cantidadAlumnos: alumnosCant,
+        //                     alumnos,
+        //                     detalles
+        //                 })
+        //             });
+
+        //             if (!res.ok) throw new Error();
+
+        //             Swal.fire({
+        //                 icon: "success",
+        //                 title: "Pedido guardado",
+        //                 confirmButtonText: "Ir al listado"
+        //             }).then(() => window.location.href = "../Listas/Index");
+
+        //         } catch {
+        //             Swal.fire({ icon: "error", text: "Error al guardar." });
+        //         }
+        //     });
+
+      });
+    </script>
+}
+

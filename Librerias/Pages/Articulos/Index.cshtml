@@ -1,0 +1,69 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Articulos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col">
+        <h3 class="float-left">Articulos</h3>
+        <a class="btn btn-primary btn-sm float-right" asp-page="Create">
+            <i class="fas fa-plus"></i> Nuevo
+        </a>
+        <br /><br />
+        <h6>Los articulos que se usan para los pedidos</h6>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="bg-white py-3">
+            <div class="table-responsive">
+               
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Categoria</th> 
+                            <th></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Articulos)
+                        {
+                            
+                            <tr>
+                                <td><img src="@item.Imagen" style="height:60px;width:60px" onerror="this.onerror=null; this.src='https://yhnjym8bmg.execute-api.sa-east-1.amazonaws.com/Prod/image/producto-sin-imagen.jpg';" /></td>
+                                <td data-label="Apellido">@Html.DisplayFor(m => item.Codigo)</td>
+                                <td data-label="Email">@Html.DisplayFor(m => item.Descripcion)</td>
+                                <td data-label="Dni">@Html.DisplayFor(m => item.Categoria)</td>
+                                
+                                <td data-label="Acciones"> 
+                                    <a asp-page="./Edit" asp-route-id="@item.ID"><i class="far fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+    </div>
+</div>
+
+
+ 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+       
+ 
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+}

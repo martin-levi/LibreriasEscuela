@@ -1,0 +1,522 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+  height:100%
+}
+
+body {
+    /* Margin bottom by footer height */
+    /*margin-bottom: 60px;*/
+    height: 100%
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+
+
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+.navbar-icon-top .navbar-nav .nav-link > .fas {
+    position: relative;
+    width: 36px;
+    font-size: 24px;
+}
+
+    .navbar-icon-top .navbar-nav .nav-link > .fas > .badge {
+        font-size: 0.75rem;
+        position: absolute;
+        right: 0;
+        font-family: sans-serif;
+    }
+
+.navbar-icon-top .navbar-nav .nav-link > .fas {
+    top: 3px;
+    line-height: 12px;
+}
+
+    .navbar-icon-top .navbar-nav .nav-link > .fas > .badge {
+        top: -10px;
+    }
+
+@media (min-width: 576px) {
+    .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link {
+        text-align: center;
+        display: table-cell;
+        height: 70px;
+        vertical-align: middle;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+        .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fas {
+            display: block;
+            width: 48px;
+            margin: 2px auto 4px auto;
+            top: 0;
+            line-height: 24px;
+        }
+
+            .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fas > .badge {
+                top: -7px;
+            }
+}
+
+@media (min-width: 768px) {
+    .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link {
+        text-align: center;
+        display: table-cell;
+        height: 70px;
+        vertical-align: middle;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+        .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link > .fas {
+            display: block;
+            width: 48px;
+            margin: 2px auto 4px auto;
+            top: 0;
+            line-height: 24px;
+        }
+
+            .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link > .fas > .badge {
+                top: -7px;
+            }
+}
+
+@media (min-width: 992px) {
+    .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link {
+        text-align: center;
+        display: table-cell;
+        height: 70px;
+        vertical-align: middle;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+        .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fas {
+            display: block;
+            width: 48px;
+            margin: 2px auto 4px auto;
+            top: 0;
+            line-height: 24px;
+        }
+
+            .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fas > .badge {
+                top: -7px;
+            }
+}
+
+@media (min-width: 1200px) {
+    .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link {
+        text-align: center;
+        display: table-cell;
+        height: 70px;
+        vertical-align: middle;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+        .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link > .fas {
+            display: block;
+            width: 48px;
+            margin: 2px auto 4px auto;
+            top: 0;
+            line-height: 24px;
+        }
+
+            .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link > .fas > .badge {
+                top: -7px;
+            }
+}
+
+
+.invalid {
+    border-color: #ff7d7d;
+}
+
+.trash-producto {
+    position: absolute;
+    left: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+@media (min-width: 768px) {
+    .navbar-right .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+
+    .navbar-right .dropdown-menu-left {
+        right: auto;
+        left: 0;
+    }
+    .navbar-left {
+        float: left !important;
+    }
+
+    .navbar-right {
+        float: right !important;
+        margin-right: -15px;
+    }
+
+        .navbar-right ~ .navbar-right {
+            margin-right: 0;
+        }
+    #btnAgregarProducto {
+        margin-top: 1rem;
+    }
+
+}
+
+table tr td:last-child {
+    text-align: right;
+}
+
+.dataTables_wrapper {
+    width: 100%;
+}
+
+    .dataTables_wrapper > div:nth-child(1),
+    .dataTables_wrapper > div:nth-child(3) {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+
+.navbar {
+    width: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.sidebar-menu {
+    padding-top: 85px;
+}
+
+@media screen and (max-width: 424px) {
+    #seccionProductos table thead {
+        display: none;
+    }
+    #btnAgregarProducto {
+        margin-top: 1rem;
+    }
+
+    #seccionProductos table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        background-color: #f8f9fa;
+    }
+    
+
+        #seccionProductos table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.85rem;
+            border: none;
+        }
+
+            #seccionProductos table tbody tr td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
+
+    #seccionProductos .btn {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+    }
+}
+
+/* === Vista tipo tarjetas para pantallas chicas === */
+@media screen and (max-width: 710px) {
+    /* Ocultar cabecera */
+    .table thead {
+        display: none;
+    }
+
+    /* Cada fila se convierte en una "tarjeta" */
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+        /* Celdas en formato de filas */
+        .table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0.5rem;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+            /* Mostrar el nombre de la columna */
+            .table tbody tr td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #333;
+            }
+
+            /* Ajuste visual del último (acciones) */
+            .table tbody tr td:last-child {
+                justify-content: flex-end;
+                gap: 8px;
+            }
+
+                .table tbody tr td:last-child::before {
+                    content: "";
+                }
+
+    /* Íconos más grandes y cómodos para toque */
+    .table td i {
+        font-size: 1.1rem;
+    }
+    #btnAgregarProducto {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .mtc{
+        margin-top:7px;
+    }
+}
+
+
+#autocompleteList {
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    display: none;
+    z-index: 9999;
+}
+
+    #autocompleteList .list-group-item {
+        cursor: pointer;
+    }
+
+        #autocompleteList .list-group-item:hover {
+            background-color: #f1f1f1;
+        }
+.card-categoria {
+    cursor: pointer;
+    border: none; 
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card-categoria:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4); 
+    }
+
+
+/* --- CARD DE PRODUCTO --- */
+.card-producto {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+    border: none;
+    margin-top: 16px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card-producto:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Contenedor interno */
+    .card-producto .contenido {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+    }
+
+    /* Imagen */
+    .card-producto img {
+        width: 160px;
+        height: 160px;
+        object-fit: contain;
+        background-color: #f5f5f5;
+        padding: 8px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+
+    /* Título */
+    .card-producto h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+
+    /* Precio */
+    .card-producto p {
+        font-size: 0.95rem;
+        color: #666;
+        margin: 0 0 10px;
+        text-align: center;
+    }
+
+    /* Input cantidad */
+    .card-producto input[type="number"] {
+        width: 60px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Botón Agregar */
+    .card-producto button {
+        background-color: #ff9800;
+        color: white;
+        font-weight: 600;
+        padding: 6px 14px;
+        border: none;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+        margin-top: auto;
+    }
+
+        .card-producto button:hover {
+            background-color: #ef6c00;
+        }
+
+/* --- AJUSTE DE GRID PARA QUE SIEMPRE SE VEAN PERFECTAS --- */
+#contenedorCardsProductos .col,
+#contenedorCardsProductos .col-12,
+#contenedorCardsProductos .col-sm-6,
+#contenedorCardsProductos .col-md-4,
+#contenedorCardsProductos .col-lg-3 {
+    display: flex;
+    margin-top: 24px !important;
+}
+
+
+/* --- SCROLL Y PADDING DEL MODAL BODY --- */
+#modalProductos .modal-body {
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.contenedor-derecha {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .card-producto {
+        margin-bottom: 16px;
+    }
+}
+
+
+#modalProductos .modal-body {
+    min-height: 500px;
+}
+
+.badge-agregado {
+    background-color: #d4edda;
+    color: #155724;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom:5px;
+}
+
+.float-wa {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    z-index: 100;
+}

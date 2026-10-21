@@ -1,0 +1,128 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Usuarios.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h3> Nuevo Usuario</h3>
+<style>
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .form-container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .btn-custom {
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<form method="post" name="frm">
+    <div class="container form-container">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input asp-for="Usuarios.Nombre" class="form-control" placeholder="Nombre" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Apellido</label>
+                <input asp-for="Usuarios.Apellido" class="form-control" placeholder="Apellido" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input asp-for="Usuarios.Email" class="form-control" placeholder="Email" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Clave</label>
+                <input asp-for="Usuarios.Clave" class="form-control" placeholder="Clave" type="password" required />
+            </div>
+        </div>
+        <div class="row mb-3">
+        <!-- Dni -->
+            <div class="col-md-6">
+                <label class="form-label">@Html.DisplayNameFor(model => model.Usuarios.Dni)</label>
+                <input asp-for="Usuarios.Dni" class="form-control" placeholder="Dni" />
+                <span asp-validation-for="Usuarios.Dni" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Fecha de Nacimiento</label>
+                    <input asp-for="Usuarios.FechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento" required />
+                <span asp-validation-for="Usuarios.FechaNacimiento" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-4">
+           
+            <div class="col-md-6">
+                <label class="form-label">Admin</label>
+                <select asp-for="Usuarios.Admin" class="form-control">
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-6 mb-2">
+                <a class="btn btn-danger btn-custom" asp-page="Index">Volver</a>
+            </div>
+            <div class="col-md-6 mb-2">
+                <input type="button" value="Guardar" class="btn btn-success btn-custom" onclick="validarForm();" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript"> 
+
+        function validarForm() {
+            if ($('#Usuarios_Email').val()!=""){
+                 if ($('#Usuarios_Clave').val()!=""){
+                    usuario = $('#Usuarios_Email').val()
+                    var existe = false;
+                    $.ajax({
+                        "url": `@(Url.Content("~/api/usuarios/validarUsuarioExistente"))/${usuario}`,
+                        "method": "GET",
+                        "async": false,
+                    }).done(function (ex) {
+                        existe = ex;
+                    });
+                    if (existe) {
+                        alert('El usuario ya existe en el sistema');
+                    }
+                    else {
+                            frm.submit();
+                    }
+                 }
+            else{
+                alert('Debe ingresar una clave');
+            }
+                
+            }
+            else{
+                alert('Debe ingresar un email');
+            }
+            
+        } 
+  
+    </script>
+
+}

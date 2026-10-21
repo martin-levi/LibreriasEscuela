@@ -1,0 +1,181 @@
+﻿@page
+@model Librerias.Pages.Listas.IndexModel
+@{
+    ViewData["Title"] = "Listas de Pedidos";
+}
+
+<h3 class="mb-4">Listas de Pedidos</h3>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre de la Lista</th>
+               
+                <th>Maestra</th>
+                <th>Cantidad Alumnos</th>
+                <th class="text-right">Total</th>
+               
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model.Pedidos)
+            {
+                <tr>
+                    <td>@pedido.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a href="#" class="text-primary" data-toggle="modal" data-target="#modalDetalle"
+                           data-id="@pedido.Id" data-nombre="@pedido.NombreLista">
+                            @pedido.NombreLista
+                        </a>
+                    </td>
+                    <td>@String.Concat(pedido.Usuarios.Nombre, " ", pedido.Usuarios.Apellido)</td>
+                    <td>@pedido.CantidadAlumnos</td>
+                    <td class="text-right">$ @pedido.ImporteTotal.ToString("0.00")</td>
+                   
+                     
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal Detalle -->
+<div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="modalDetalleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content shadow-sm">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title" id="modalDetalleLabel">Detalle del Pedido</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="infoPedidoExtra" class="mb-3">
+                    <p><strong>Escuela:</strong> <span id="detalleEscuela">-</span></p>
+                    <p><strong>Salita:</strong> <span id="detalleSalita">-</span></p>
+                    <p><strong>Observaciones:</strong> <span id="detalleObservaciones">-</span></p>
+                </div>
+                <ul class="nav nav-tabs mb-3" id="detalleTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="productos-tab" data-toggle="tab" href="#productos" role="tab">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="alumnos-tab" data-toggle="tab" href="#alumnos" role="tab">
+                            Alumnos
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="detalleTabContent">
+                    <div class="tab-pane fade show active" id="productos" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Artículo</th>
+                                        <th>Cantidad</th>
+                                        <th class="text-right">Precio Total</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaProductos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="alumnos" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Alumno</th>
+                                        <th class="text-right">Monto</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaAlumnos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="https://wa.me/+5493834212333?text=Hola estoy interesado" class="float-wa" target="_blank">
+    <i class="fa fa-whatsapp" style="margin-top:16px;"></i>
+</a>
+@section Scripts {
+    <script>
+
+        localStorage.removeItem("pedidoProductos");
+        localStorage.removeItem("pedidoNombreLista");
+        localStorage.removeItem("pedidoAlumnos");
+        localStorage.removeItem("pedidoMaestra");
+
+
+
+        $('#modalDetalle').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // Botón que abrió el modal
+            const pedidoId = button.data('id');
+            const nombreLista = button.data('nombre');
+
+            $('#modalDetalleLabel').text(`Detalle de: ${nombreLista}`);
+
+            fetch(`@(Url.Content("~/api/pedidos/detalle/"))${pedidoId}`)
+                .then(res => res.json())
+                .then(data => {
+                    // Productos
+                    const productos = data.detalles;
+                    const tbodyProductos = document.getElementById("tablaProductos");
+                    tbodyProductos.innerHTML = "";
+                    productos.forEach(p => {
+                        tbodyProductos.innerHTML += `
+                            <tr>
+                                <td style='display:flex;align-items: center;'><div class='col-6'>${p.nombreArticulo}</div><div class='col-6' style='display:flex;justify-content: flex-end;'> <img src='${p.imagen}' width='80px' /> </div></td>
+                                <td style='text-align: -webkit-center;'>${p.cantidad}</td>
+                                <td>$ ${p.precio.toFixed(2)}</td>
+                                
+                            </tr>`;
+                    });
+
+                    // Alumnos
+                    const alumnos = data.alumnos;
+                    
+                    document.getElementById("detalleEscuela").textContent = data.nombreEscuela || "-";
+                    document.getElementById("detalleSalita").textContent = data.nombreSalita || "-";
+                    document.getElementById("detalleObservaciones").textContent = data.observaciones || "-";
+
+                    const tbodyAlumnos = document.getElementById("tablaAlumnos");
+                    tbodyAlumnos.innerHTML = "";
+                    alumnos.forEach(a => {
+                        tbodyAlumnos.innerHTML += `
+                            <tr>
+                                <td>${a.nombre}</td>
+                                <td>$ ${a.monto.toFixed(2)}</td>
+                                <td>
+                                 <a href="javascript:void(0)" class="text-danger" onclick='Imprimir(1,${a.id})'><i class="fas fa-file-pdf"></i></a>
+                                </td>
+                            </tr>`;
+                    });
+                })
+                .catch(() => alert("Error al cargar los detalles del pedido."));
+        });
+
+        function Imprimir(cantidad,id){
+             
+           for (let i = 0; i < cantidad; i++) {
+
+                const url = `@Url.Content("~/api/Reporte/")${id}`;
+                window.open(url, '_blank');
+            }
+        }
+    </script>
+}

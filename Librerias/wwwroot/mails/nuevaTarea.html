@@ -1,0 +1,233 @@
+﻿<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<title></title>
+<style>
+    html,
+    body {
+        margin: 0 auto !important;
+        padding: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    * {
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+
+
+    div[style*="margin: 16px 0"] {
+        margin: 0 !important;
+    }
+
+    table,
+    td {
+        mso-table-lspace: 0pt !important;
+        mso-table-rspace: 0pt !important;
+    }
+
+
+    table {
+        border-spacing: 0 !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        margin: 0 auto !important;
+    }
+
+        table table table {
+            table-layout: auto;
+        }
+
+    /* What it does: Uses a better rendering method when resizing images in IE. */
+    img {
+        -ms-interpolation-mode: bicubic;
+    }
+
+    /* What it does: A work-around for iOS meddling in triggered links. */
+    *[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+
+    /* What it does: A work-around for Gmail meddling in triggered links. */
+    .x-gmail-data-detectors,
+    .x-gmail-data-detectors *,
+    .aBn {
+        border-bottom: 0 !important;
+        cursor: default !important;
+    }
+
+    /* What it does: Prevents Gmail from displaying an download button on large, non-linked images. */
+    .a6S {
+        display: none !important;
+        opacity: 0.01 !important;
+    }
+
+    img.g-img + div {
+        display: none !important;
+    }
+
+    /* What it does: Prevents underlining the button text in Windows 10 */
+    .button-link {
+        text-decoration: none !important;
+    }
+
+    @media only screen and (min-device-width: 375px) and (max-device-width: 413px) { /* iPhone 6 and 6+ */
+        .email-container {
+            min-width: 375px !important;
+        }
+    }
+</style>
+
+<!-- Progressive Enhancements -->
+<style>
+
+    /* What it does: Hover styles for buttons */
+    .button-td,
+    .button-a {
+        transition: all 100ms ease-in;
+    }
+
+        .button-td:hover,
+        .button-a:hover {
+            background: #ffffff !important;
+            border-color: #0066a0 !important;
+        }
+
+    /* Media Queries */
+    @media screen and (max-width: 600px) {
+
+        .email-container {
+            width: 100% !important;
+            margin: auto !important;
+        }
+
+        /* What it does: Forces elements to resize to the full width of their container. Useful for resizing images beyond their max-width. */
+        .fluid {
+            max-width: 100% !important;
+            height: auto !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        /* What it does: Forces table cells into full-width rows. */
+        .stack-column,
+        .stack-column-center {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            direction: ltr !important;
+        }
+        /* And center justify these ones. */
+        .stack-column-center {
+            text-align: center !important;
+        }
+
+        /* What it does: Generic utility class for centering. Useful for images, buttons, and nested tables. */
+        .center-on-narrow {
+            text-align: center !important;
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            float: none !important;
+        }
+
+        table.center-on-narrow {
+            display: inline-block !important;
+        }
+
+        /* What it does: Adjust typography on small screens to improve readability */
+        .email-container p {
+            font-size: 17px !important;
+            line-height: 22px !important;
+        }
+    }
+</style>
+
+
+
+<center style="width: 100%; background: #ffffff; text-align: left;">
+
+    <!-- Email Header : BEGIN -->
+    <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
+        <tbody>
+            <tr>
+                <td style="padding: 10px 0; text-align: center">
+                    <a href="http://www.seincomp.com" target="_blank">
+                        <img src="https://app.rmgconsultores.com.ar/images/3marcas.png" aria-hidden="true" width="312" height="51" alt="" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
+
+
+        <tbody>
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 20px 40px 20px; text-align: center;">
+                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 27px; color: #333333; font-weight: normal;">Tenes una nueva tarea pendiente </h1>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: center;">
+
+                    <div>
+                        <div style="font-weight:bold;">Empresa:</div>
+                        <div style="font-size: large;">#EMPRESA#</div>
+                    </div>
+                    <br />
+                    <div>
+                        <div style="font-weight:bold;">Vencimiento:</div>
+                        <div style="font-size: large;">#FECHA#</div>
+                    </div>
+                    <br />
+                    <div>
+                        <div style="font-weight:bold;">Tipo de Tarea:</div>
+                        <div style="font-size: large;">#TAREA#</div>
+                    </div>
+                    <br />
+                    <div style="margin-top:10px;">
+                        <div style="font-weight:bold; text-align: left;">Comentario</div>
+                        <div style="border: solid 2px;border-radius: 5px;padding: 15px;">#COMENTARIO#</div>
+                    </div>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 0 30px 30px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+                    <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: auto">
+                        <tbody>
+                            <tr>
+                                <td style="border-radius: 3px; background: #222222; text-align: center;" class="button-td">
+                                    <a href="@@LINK@@" target="_blank" style="background: orange; border: 15px solid orange; font-family: sans-serif; font-size: 13px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" class="button-a">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">Ingresar</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+    <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
+        <tbody>
+            <tr>
+                <td style="padding: 20px 10px;width: 100%;font-size: 12px; font-family: sans-serif; line-height:18px; text-align: center; color: #ffffff;" class="x-gmail-data-detectors">
+                    Notificación generada automáticamente, por favor no responder.
+                    <br><br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</center>

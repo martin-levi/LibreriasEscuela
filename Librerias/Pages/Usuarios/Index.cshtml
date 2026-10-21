@@ -1,0 +1,106 @@
+﻿@page
+@model Librerias.Pages.Configuraciones.Usuarios.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col">
+        <h3 class="float-left">Usuarios</h3>
+        <a class="btn btn-primary btn-sm float-right" asp-page="Create">
+            <i class="fas fa-plus"></i> Nuevo
+        </a>
+        <br /><br />
+        <h6>Los usuarios que podran acceder al sistema</h6>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="bg-white py-3">
+            <div class="table-responsive">
+               
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Dni</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Admin</th>
+                            <th>Fecha de Alta</th>
+                            <th></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Usuarios)
+                        {
+                            var claveId = $"clave_{item.Id}";
+                            var iconId = $"icon_{item.Id}";
+                            <tr>
+                                <td data-label="Nombre">@Html.DisplayFor(m => item.Nombre)</td>
+                                <td data-label="Apellido">@Html.DisplayFor(m => item.Apellido)</td>
+                                <td data-label="Email">@Html.DisplayFor(m => item.Email)</td>
+                                <td data-label="Dni">@Html.DisplayFor(m => item.Dni)</td>
+                                <td data-label="FechaNacimiento">@item.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                                <td data-label="Admin">
+                                    <input type="checkbox" disabled @(item.Admin ? "checked" : "") />
+                                </td>
+                                <td data-label="Fecha de Alta">@Html.DisplayFor(m => item.FechaGrabado)</td>
+                                <td data-label="Acciones">
+                                    <a href="#" onclick="BlanquearClave(@item.Id)"><i class="fas fa-lock-open"></i></a>
+                                    <a asp-page="./Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                                    <a class="text-danger" asp-page="./Delete" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+    </div>
+</div>
+
+
+<div id="snackbar">Clave blanqueada con éxito</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function BlanquearClave(idUsuario) {
+            $.ajax({
+                url: `../api/usuarios/PostBlanquearClave/${idUsuario}`,
+                method: "POST"
+            }).done(function () {
+                $("#modalClave").modal('hide');
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 2000);
+            });
+        }
+
+        function toggleClave(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+}

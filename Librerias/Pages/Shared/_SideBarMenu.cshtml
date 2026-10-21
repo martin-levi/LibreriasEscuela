@@ -1,0 +1,31 @@
+﻿
+@{
+    var path = Context.Request.Path.ToString().ToLower();
+    var showCrud = path.Contains("configuraciones") ? true : false;
+}
+
+@if (showCrud)
+{
+    <div class="my-2 p-3 bg-white rounded shadow-sm">
+
+        <div class="list-group" id="list-tab" role="tablist">
+
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Condiciones".ToLower()) ? "active" : "")" asp-page="/configuraciones/Condiciones/Index">Clientes</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Movimientos".ToLower()) ? "active" : "")" asp-page="/configuraciones/Movimientos/Index">Productos</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Importaciones".ToLower()) ? "active" : "")" asp-page="/configuraciones/Importaciones/Index">Importaciones de Archivo</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("ImputacionesContablesCompra".ToLower()) ? "active" : "")" asp-page="/configuraciones/ImputacionesContablesCompra/Index">Imputaciones contables compra</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("ImputacionesContablesVenta".ToLower()) ? "active" : "")" asp-page="/configuraciones/ImputacionesContablesVenta/Index">Imputaciones contables venta</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Tipos/".ToLower()) ? "active" : "")" asp-page="/configuraciones/Tipos/Index">Tipos de Comprobante</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("TipoTareas".ToLower()) ? "active" : "")" asp-page="/configuraciones/TipoTareas/Index">Tipos de Tareas</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("TiposRetencion".ToLower()) ? "active" : "")" asp-page="/configuraciones/TiposRetencion/Index">Tipos de retenciones</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("TiposPercepcion".ToLower()) ? "active" : "")" asp-page="/configuraciones/TiposPercepcion/Index">Tipos de percepciones</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Jurisdicciones".ToLower()) ? "active" : "")" asp-page="/configuraciones/Jurisdicciones/Index">Jurisdicciones</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Talonarios".ToLower()) ? "active" : "")" asp-page="/configuraciones/Talonarios/Index">Talonarios</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Sistemas".ToLower()) ? "active" : "")" asp-page="/configuraciones/Sistemas/Index">Sistemas</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Empresas".ToLower()) ? "active" : "")" asp-page="/configuraciones/Empresas/Index">Empresas</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Usuarios".ToLower()) ? "active" : "")" asp-page="/configuraciones/Usuarios/Index">Usuarios</a>
+            <a class="list-group-item list-group-item-action @Html.Raw(path.Contains("Permisos".ToLower()) ? "active" : "")" asp-page="/configuraciones/Permisos/Index">Permisos</a>
+        </div>
+       
+    </div>
+    }
